@@ -32,14 +32,10 @@ public class MessageController {
 	}
 
 	@GetMapping("/messages")
-	public ResponseEntity<List<Message>> getAllmessages(@RequestParam(required = false) String title) {
+	public ResponseEntity<List<Message>> getAllmessages() {
 		try {
 			List<Message> messages = new ArrayList<>();
-
-			if (title == null)
-                messages.addAll(messageRepository.findAll());
-			else
-                messages.addAll(messageRepository.findByTitleContaining(title));
+            messages.addAll(messageRepository.findAll());
 
 			if (messages.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -62,7 +58,7 @@ public class MessageController {
 	public ResponseEntity<Message> createMessage(@RequestBody Message message) {
 		try {
 			Message _message = messageRepository
-					.save(new Message(message.getTitle(), message.getDescription()));
+					.save(new Message(message.getContent(), message.getVisible(), message.getCreationDate()));
 			return new ResponseEntity<>(_message, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -75,32 +71,12 @@ public class MessageController {
 
 		if (messageData.isPresent()) {
 			Message _message = messageData.get();
-			_message.setTitle(message.getTitle());
-			_message.setDescription(message.getDescription());
+			_message.setContent(message.getContent());
+			_message.setVisible(message.getVisible());
+			_message.setCreationDate(message.getCreationDate());
 			return new ResponseEntity<>(messageRepository.save(_message), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-	}
-
-	@DeleteMapping("/messages/{id}")
-	public ResponseEntity<HttpStatus> deleteMessage(@PathVariable("id") long id) {
-		try {
-			messageRepository.deleteById(id);
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-	@DeleteMapping("/messages")
-	public ResponseEntity<HttpStatus> deleteAllMessages() {
-		try {
-			messageRepository.deleteAll();
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-
 	}
 }

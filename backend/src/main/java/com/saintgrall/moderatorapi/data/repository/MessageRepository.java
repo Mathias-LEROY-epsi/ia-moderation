@@ -6,5 +6,5 @@ import com.saintgrall.moderatorapi.data.model.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
-  List<Message> findByTitleContaining(String title);
+
 }

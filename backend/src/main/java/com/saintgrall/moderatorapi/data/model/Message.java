@@ -3,30 +3,34 @@ package com.saintgrall.moderatorapi.data.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tutorials")
+@Table(name = "Message")
 public class Message {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
 
-  @Column(name = "title")
-  private String title;
+  @Column(name = "content")
+  private String content;
 
-  @Column(name = "description")
-  private String description;
+  @Column(name = "visible")
+  private Boolean visible;
+
+  @Column(name = "creation_date")
+  private Date creation_date;
 
   public Message() {
   }
 
-  public Message(String title, String description) {
-    this.title = title;
-    this.description = description;
+  public Message(String content, Boolean visible) {
+    this.content = content;
+    this.visible = visible;
+    this.creation_date = new Date();
   }
 
   @Override
   public String toString() {
-    return "Message [id=" + id + ", title=" + title + ", desc=" + description + "]";
+    return "Message [id=" + id + ", content=" + content + ", visible=" + visible + ", creation_date=" + creation_date + "]";
   }
 
   public long getId() {
@@ -37,19 +41,27 @@ public class Message {
     this.id = id;
   }
 
-  public String getTitle() {
-    return title;
+  public String getContent() {
+    return content;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public void setContent(String content) {
+    this.content = content;
   }
 
-  public String getDescription() {
-    return description;
+  public Boolean getVisible() {
+    return visible;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setVisible(Boolean visible) {
+    this.visible = visible;
+  }
+
+  public Date getCreationDate() {
+    return creation_date;
+  }
+
+  public void setCreationDate(Date creation_date) {
+    this.creation_date = creation_date;
   }
 }
