@@ -1,25 +1,23 @@
 version: '3.9'
 
 services:
-  database:
-    image: postgres:17.0
+  mongodb:
+    image: mongo:6.0
     restart: always
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - ./postgre:/var/lib/postgresql/data
+      - ./mongo:/data/db
     environment:
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_USER=user
-      - POSTGRES_DB=
-      
-  pgadmin:
-    image: dpage/pgadmin4
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+
+  mongo-express:
+    image: mongo-express:latest
     restart: always
     ports:
-      - "8080:80"
+      - "8081:8081"
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    depends_on:
-      - database
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=mongoadmin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=secret
+      - ME_CONFIG_MONGODB_SERVER=mongodb
