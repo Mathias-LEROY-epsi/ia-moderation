@@ -1,10 +1,10 @@
 package com.saintgrall.moderatorapi.data.repository;
 
-import java.util.List;
-
 import com.saintgrall.moderatorapi.data.model.Message;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface MessageRepository extends JpaRepository<Message, Long> {
+import java.util.Optional;
 
+public interface MessageRepository extends MongoRepository<Message, Long> {
+    Optional<Message> findById(String id);
 }

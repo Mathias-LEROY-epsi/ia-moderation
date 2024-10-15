@@ -1,43 +1,38 @@
 package com.saintgrall.moderatorapi.data.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "Message")
+import java.util.Date;
+
+@Document(collection = "Message")
 public class Message {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  private String id;
 
-  @Column(name = "content")
   private String content;
 
-  @Column(name = "visible")
   private Boolean visible;
 
-  @Column(name = "creation_date")
-  private Date creation_date;
-
-  public Message() {
-  }
+  private Date creationDate;
 
   public Message(String content, Boolean visible) {
     this.content = content;
     this.visible = visible;
-    this.creation_date = new Date();
+    this.creationDate = new Date();
   }
 
   @Override
   public String toString() {
-    return "Message [id=" + id + ", content=" + content + ", visible=" + visible + ", creation_date=" + creation_date + "]";
+    return "Message [id=" + id + ", content=" + content + ", visible=" + visible + ", creation_date=" + creationDate + "]";
   }
 
-  public long getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -58,10 +53,12 @@ public class Message {
   }
 
   public Date getCreationDate() {
-    return creation_date;
+    return creationDate;
   }
 
-  public void setCreationDate(Date creation_date) {
-    this.creation_date = creation_date;
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
   }
 }
+
+
