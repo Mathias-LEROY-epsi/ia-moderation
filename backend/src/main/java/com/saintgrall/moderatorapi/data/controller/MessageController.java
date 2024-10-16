@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -79,6 +80,18 @@ public class MessageController {
 			originalMessage.setVisible(message.getVisible());
 			originalMessage.setCreationDate(message.getCreationDate());
 			return new ResponseEntity<>(messageRepository.save(originalMessage), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@DeleteMapping ("/messages/{id}")
+	public ResponseEntity<Message> deleteMessage(@PathVariable("id") String id) {
+		Optional<Message> messageData = messageRepository.findById(id);
+
+		if (messageData.isPresent()) {
+			messageRepository.deleteById(id);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
