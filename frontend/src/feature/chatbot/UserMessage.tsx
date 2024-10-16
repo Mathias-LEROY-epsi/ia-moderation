@@ -37,7 +37,7 @@ export const UserMessage = ({
             )}
           </div>
         </div>
-        <div className="text-xs text-muted-foreground">{format(createdAt, "PPpp")}</div>
+        <div className="text-xs text-muted-foreground">{format(createdAt ?? new Date(), "PPpp")}</div>
       </div>
       <Avatar className="w-8 h-8">
         <AvatarImage src={avatarImage ?? "/placeholder-user.jpg"} alt="User Avatar" />

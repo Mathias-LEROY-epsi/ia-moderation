@@ -21,25 +21,36 @@ export function Chatbot({
   onSendMessage: (message: string) => void;
 } & User) {
   const [newMessage, setNewMessage] = useState("");
+  console.log();
+
+  const showMessages = () => {
+    if (messages.length === 0) {
+      return <p>Bienvenue ! vous pouvez envoyer des messages pour commencer la discussion</p>;
+    }
+    return (
+      <>
+        {messages.map(message => {
+          return (
+            <UserMessage
+              key={message.id}
+              message={message.content}
+              avatarImage={isAuthenticated && user ? user.picture : "/placeholder-user.jpg"}
+              avatarFallback={isAuthenticated && user ? user.nickname : "You"}
+              isVisible={message.visible}
+              createdAt={message.creation_date}
+              causes={message.reasons}
+            />
+          );
+        })}
+      </>
+    );
+  };
+
   return (
     <div className="flex flex-col h-full bg-background">
       <div className="flex-1 overflow-auto p-4">
         <ScrollArea>
-          <div className="grid gap-4">
-            {messages.map(message => {
-              return (
-                <UserMessage
-                  key={message.id}
-                  message={message.content}
-                  avatarImage={isAuthenticated && user ? user.picture : "/placeholder-user.jpg"}
-                  avatarFallback={isAuthenticated && user ? user.nickname : "You"}
-                  isVisible={message.visible}
-                  createdAt={message.creation_date}
-                  causes={message.reasons}
-                />
-              );
-            })}
-          </div>
+          <div className="grid gap-4">{showMessages()}</div>
         </ScrollArea>
       </div>
       <div className="bg-card p-4 border-t sticky bottom-0 z-10">

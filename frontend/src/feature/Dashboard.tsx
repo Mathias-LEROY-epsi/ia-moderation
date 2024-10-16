@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllMessages, postAMessage, postModeration } from "@/api";
 import { Navbar } from "@/components/NavBar";
 import { Chatbot } from "@/feature/chatbot";
+import { Reasons } from "@/types";
 
 const Container = ({ user, isAuthenticated, children }: PropsWithChildren<User>) => {
   return (
@@ -41,48 +42,38 @@ export default function Dashboard() {
 
   const queryPostModerateAMessage = useMutation({
     mutationFn: postModeration,
-    onSuccess: async data => {
-      const attributeScores = data?.attributeScores || {};
-      const attributeKeys = Object.keys(attributeScores);
-
-      // Si attributeScores est vide, retourne null
-      if (attributeKeys.length === 0) {
-        return [];
-      }
-      // Retourne une liste des clés présentes dans attributeScores
-      return attributeKeys.filter(key => attributeScores[key]);
-    },
     onError: error => {
       console.log("Erreur lors de la vérification du message: ", error);
     },
   });
 
-  console.log(queryGetAllMessages.data);
-
   const handleSendMessage = async (message: string) => {
     try {
       // Exécution de la modération du message
-      const reasons: string[] = await new Promise((resolve, reject) => {
+      const reasonsModerated: Reasons = await new Promise((resolve, reject) => {
         queryPostModerateAMessage.mutate(message, {
           onSuccess: resolve,
           onError: reject,
         });
       });
 
+      const attributeScores = reasonsModerated.attributeScores || {};
+      const attributeKeys = Object.keys(attributeScores);
+
       // Vérification des résultats de la modération
-      if (reasons.length === 0) {
+      if (reasonsModerated.attributeScores) {
+        // Message modéré avec des raisons
+        queryPostAMessage.mutate({
+          content: message,
+          visible: false,
+          reasons: attributeKeys,
+        });
+      } else {
         // Message sans modération
         queryPostAMessage.mutate({
           content: message,
           visible: true,
           reasons: [],
-        });
-      } else {
-        // Message modéré avec des raisons
-        queryPostAMessage.mutate({
-          content: message,
-          visible: false,
-          reasons: reasons,
         });
       }
     } catch (error) {
@@ -108,7 +99,7 @@ export default function Dashboard() {
     <Container user={user} isAuthenticated={isAuthenticated}>
       <div className="flex flex-col h-screen">
         <Chatbot
-          messages={queryGetAllMessages.data}
+          messages={queryGetAllMessages.data ?? []}
           onSendMessage={handleSendMessage}
           user={user!}
           isAuthenticated={isAuthenticated}
