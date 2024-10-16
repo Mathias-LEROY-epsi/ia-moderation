@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface MessageRepository extends MongoRepository<Message, Long> {
     Optional<Message> findById(String id);
+
+    void deleteById(String id);
 }
