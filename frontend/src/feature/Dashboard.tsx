@@ -11,7 +11,7 @@ const Container = ({ user, isAuthenticated, children }: PropsWithChildren<User>)
     <div className="grid h-screen w-full">
       <div className="flex flex-col">
         <Navbar user={user} isAuthenticated={isAuthenticated} />
-        {children}
+        {isAuthenticated ? children : <p className="ml-5 mt-5">Vous devez être connecté pour visualiser les messages</p>}
       </div>
     </div>
   );
