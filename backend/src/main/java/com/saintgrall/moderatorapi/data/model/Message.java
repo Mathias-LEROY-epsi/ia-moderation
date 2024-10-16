@@ -8,57 +8,72 @@ import java.util.Date;
 @Document(collection = "Message")
 public class Message {
 
-  @Id
-  private String id;
+    @Id
+    private String id;
 
-  private String content;
+    private String content;
 
-  private Boolean visible;
+    private Boolean visible;
 
-  private Date creationDate;
+    private String[] reasons;
 
-  public Message(String content, Boolean visible) {
-    this.content = content;
-    this.visible = visible;
-    this.creationDate = new Date();
-  }
+    private Date creationDate;
 
-  @Override
-  public String toString() {
-    return "Message [id=" + id + ", content=" + content + ", visible=" + visible + ", creation_date=" + creationDate + "]";
-  }
+    public Message(String content, Boolean visible, String[] reasons) {
+        this.content = content;
+        this.visible = visible;
+        this.reasons = reasons;
+        this.creationDate = new Date();
+    }
 
-  public String getId() {
-    return id;
-  }
+    @java.lang.Override
+    public java.lang.String toString() {
+        return "Message{" +
+                "id='" + id + '\'' +
+                ", content='" + content + '\'' +
+                ", visible=" + visible +
+                ", reasons=" + java.util.Arrays.toString(reasons) +
+                ", creationDate=" + creationDate +
+                '}';
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public String getContent() {
-    return content;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public void setContent(String content) {
-    this.content = content;
-  }
+    public String getContent() {
+        return content;
+    }
 
-  public Boolean getVisible() {
-    return visible;
-  }
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-  public void setVisible(Boolean visible) {
-    this.visible = visible;
-  }
+    public Boolean getVisible() {
+        return visible;
+    }
 
-  public Date getCreationDate() {
-    return creationDate;
-  }
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
 
-  public void setCreationDate(Date creationDate) {
-    this.creationDate = creationDate;
-  }
+    public String[] getReasons() {
+        return reasons;
+    }
+
+    public void setReasons(String[] reasons) {
+        this.reasons = reasons;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 }
-
-
